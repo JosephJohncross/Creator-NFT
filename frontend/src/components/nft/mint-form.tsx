@@ -13,12 +13,12 @@ import {
 
 type uploadStatus = "idle" | "uploading" | "minting" | "success" | "error";
 
-export default function MintForm() {
+export default function MintForm({getBalance}: {getBalance:  (...args: any) => Promise<boolean>}) {
   const { address } = useAccount();
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [recipientAddress, setRecipientAddress] = useState("");
+  // const [recipientAddress, setRecipientAddress] = useState("");
 //   const [tokenId, setTokenId] = useState("");
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 //   const [isOwner, setIsOwner] = useState<boolean>(false);
@@ -49,7 +49,7 @@ export default function MintForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!file || !name || !description || !recipientAddress) return;
+    if (!file || !name || !description ) return;
 
     // validate token id
     // const tokenIdNum = parseInt(tokenId);
@@ -59,17 +59,17 @@ export default function MintForm() {
     // }
 
     // Validate recipient address
-    if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress)) {
-      toast.error("Invalid recipient address");
-      return;
-    }
+    // if (!/^0x[a-fA-F0-9]{40}$/.test(recipientAddress)) {
+    //   toast.error("Invalid recipient address");
+    //   return;
+    // }
 
     setStatus("uploading");
     setUploadProgress("Uploading image to IPFS...");
 
     try {
       // Upload image to IPFS
-      const imageUrl = await uploadToIPFS(file);
+      const imageUrl = await uploadToIPFS(file, address);
       setUploadProgress("Uploading metadata to IPFS...");
 
       // Create and upload metadata
@@ -84,16 +84,18 @@ export default function MintForm() {
       setStatus("minting");
 
       // Mint NFT with specified token ID to recipient address
-      await mintNFT(recipientAddress, imageUrl);
+      await mintNFT(imageUrl);
 
       setStatus("success");
       toast.success("NFT minted successfully!");
+
+      getBalance({address})
 
       // Reset form
       setFile(null);
       setName("");
       setDescription("");
-      setRecipientAddress("");
+      // setRecipientAddress("");
     //   setTokenId("");
       setPreviewUrl("");
       setUploadProgress("");
@@ -111,8 +113,9 @@ export default function MintForm() {
     status === "minting" ||
     !file ||
     !name ||
-    !description ||
-    !recipientAddress 
+    !description 
+    // ||
+    // !recipientAddress 
     // ||
     // !tokenId;
 
@@ -165,7 +168,7 @@ export default function MintForm() {
           disabled={status === "uploading" || status === "minting"}
         />
       </div>
-      <div className="space-y-2">
+      {/* <div className="space-y-2">
         <label className="text-sm font-medium">Recipient Address</label>
         <Input
           type="text"
@@ -175,7 +178,7 @@ export default function MintForm() {
           required
           disabled={status === "uploading" || status === "minting"}
         />
-      </div>
+      </div> */}
 
       {/* <div className="space-y-2">
         <label className="text-sm font-medium">Token ID</label>

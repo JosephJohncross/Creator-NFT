@@ -15,7 +15,7 @@ export interface NFTMetadata {
     }>;
 }
 
-export const uploadToIPFS = async (file: File): Promise<string> => {
+export const uploadToIPFS = async (file: File, address: string): Promise<string> => {
     try {
         // Get presigned URL from your server
         const urlResponse = await fetch(`${import.meta.env.VITE_SERVER_URL}/presigned_url`, {
@@ -24,12 +24,17 @@ export const uploadToIPFS = async (file: File): Promise<string> => {
                 // Add your server authorization headers here
             }
         });
+
+        console.log(urlResponse)
         const data = await urlResponse.json();
 
         // Upload file using presigned URL
         const upload = await pinata.upload.public
             .file(file)
-            .url(data.url);
+            .url(data.url)
+            .keyvalues({
+                user: address
+            });
 
         if (!upload.cid) {
             throw new Error('Upload failed - no CID returned');
@@ -62,7 +67,7 @@ export const uploadMetadata = async (metadata: NFTMetadata): Promise<string> => 
         // Upload metadata using presigned URL
         const upload = await pinata.upload.public
             .file(metadataFile)
-            .url(data.url);
+            .url(data.url)
 
         if (!upload.cid) {
             throw new Error('Upload failed - no CID returned');

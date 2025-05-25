@@ -28,12 +28,12 @@ export const getSymbol = async () => {
     }
 }
 
-export const mintNFT = async (to: string, tokenUri: string) =>{
+export const mintNFT = async (tokenUri: string) =>{
     await ensureEthereumAvailable();
 
     try {
         const contract: Contract = await getNftContract();
-        const tx = await contract.mintNft(to, tokenUri);
+        const tx = await contract.mintNft(tokenUri);
         const receipt = await tx.wait();
 
         return receipt;

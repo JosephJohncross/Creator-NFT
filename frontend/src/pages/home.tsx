@@ -7,6 +7,7 @@ import { getName, getSymbol, getTokenBalance } from "../services/serviceFn";
 import { truncateAddr } from "../lib/utils";
 import { MdSignalWifiStatusbarConnectedNoInternet } from "react-icons/md";
 import MintForm from "../components/nft/mint-form";
+import { getBalance } from "viem/actions";
 const Home = () => {
     const { isConnected, address } = useAccount();
     const [tokenName, setTokenName] = useState<string>("");
@@ -77,10 +78,10 @@ const Home = () => {
     }, []);
 
     return (
-        <main className="flex flex-col w-full h-[calc(100vh-80px)] py-10 mt-16 relative font-poppins overflow-y-auto">
+        <main className="flex flex-col w-full h-[calc(100vh-80px)] py-10 mt-20 relative font-poppins overflow-y-auto">
             {isConnected ? (
                 <div className="mx-auto max-w-3xl size-full flex flex-col gap-8 flex-1">
-                <div className="flex items-center justify-between px-6 bg-green-500 rounded-md py-3">
+                <div className="flex items-end justify-between px-6 bg-green-500 rounded-md py-5">
                     <div className="">
                         <div className="flex flex-col gap-1">
                         <h1 className="text-xl font-medium text-slate-800">
@@ -93,16 +94,16 @@ const Home = () => {
                     </div>
 
                     <div className="">
-                        <p className="text-xs uppercase tracking-wide text-white font-semibold">
-                            Balance:{isTBalanceLoading ? "Loading..." : tokenBalance } {isSymbolLoading ? "Loading..." : tokenSymbol}
-                        </p>
+                        <span className="text-xs uppercase tracking-wide text-white font-semibold">
+                            Balance: <span className="text-base font-medium">{isTBalanceLoading ? "Loading..." : tokenBalance } {isSymbolLoading ? "Loading..." : tokenSymbol}</span>
+                        </span>
                     </div>
                 </div>
 
                 <div className="flex flex-col gap-4 p-4 bg-card rounded-lg border">
                     <div className="bg-card/50 rounded-lg p-6">
                     <h2 className="text-lg font-medium mb-4">Mint New NFT</h2>
-                    <MintForm />
+                    <MintForm getBalance={getTokenBalanceFn}/>
                     </div>
                 </div>
                 </div>
