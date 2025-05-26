@@ -901,6 +901,10 @@ html {
   margin-top: 5rem;
 }
 
+.mb-5 {
+  margin-bottom: 1.25rem;
+}
+
 .line-clamp-2 {
   overflow: hidden;
   display: -webkit-box;
@@ -1042,6 +1046,10 @@ html {
 
 .h-\[calc\(80vh-80px\)\] {
   height: calc(80vh - 80px);
+}
+
+.h-\[calc\(70vh-80px\)\] {
+  height: calc(70vh - 80px);
 }
 
 .max-h-96 {
@@ -1232,6 +1240,10 @@ html {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.justify-evenly {
+  justify-content: space-evenly;
 }
 
 .gap-1 {
@@ -1566,6 +1578,16 @@ html {
   padding-bottom: 1.25rem;
 }
 
+.py-44 {
+  padding-top: 11rem;
+  padding-bottom: 11rem;
+}
+
+.py-7 {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
+
 .pb-4 {
   padding-bottom: 1rem;
 }
@@ -1590,12 +1612,32 @@ html {
   padding-top: 1rem;
 }
 
+.pt-24 {
+  padding-top: 6rem;
+}
+
+.pt-44 {
+  padding-top: 11rem;
+}
+
+.pt-36 {
+  padding-top: 9rem;
+}
+
+.pt-32 {
+  padding-top: 8rem;
+}
+
 .text-left {
   text-align: left;
 }
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .align-middle {

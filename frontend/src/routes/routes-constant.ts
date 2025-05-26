@@ -1,5 +1,5 @@
 export const ApplicationRoutes = {
   HOME: '/',
   COLLECTIONS: '/collections',
-  TRANSACTIONS: '/transactions'
+  TRANSACTIONS: '/logs'
 };

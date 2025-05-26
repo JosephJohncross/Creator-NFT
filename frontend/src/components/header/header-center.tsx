@@ -12,7 +12,7 @@ export const centerRoutes = [
         link: ApplicationRoutes.COLLECTIONS
     },
     {
-        label: "History",
+        label: "Logs",
         link: ApplicationRoutes.TRANSACTIONS
     },
 ]
