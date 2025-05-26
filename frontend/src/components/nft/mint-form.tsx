@@ -69,7 +69,7 @@ export default function MintForm({getBalance}: {getBalance:  (...args: any) => P
 
     try {
       // Upload image to IPFS
-      const imageUrl = await uploadToIPFS(file, address);
+      const imageUrl = await uploadToIPFS(file);
       setUploadProgress("Uploading metadata to IPFS...");
 
       // Create and upload metadata
@@ -78,7 +78,7 @@ export default function MintForm({getBalance}: {getBalance:  (...args: any) => P
         description,
         image: imageUrl,
       };
-      await uploadMetadata(metadata);
+      await uploadMetadata(metadata, address);
 
       setUploadProgress("Minting NFT...");
       setStatus("minting");

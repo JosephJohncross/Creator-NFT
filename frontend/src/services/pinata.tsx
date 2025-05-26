@@ -1,4 +1,5 @@
 import { PinataSDK } from 'pinata'
+import { ensureEthereumAvailable } from ".";
 
 const pinata = new PinataSDK({
     pinataJwt: import.meta.env.VITE_PINATA_JWT,
@@ -15,7 +16,8 @@ export interface NFTMetadata {
     }>;
 }
 
-export const uploadToIPFS = async (file: File, address: string): Promise<string> => {
+
+export const uploadToIPFS = async (file: File): Promise<string> => {
     try {
         // Get presigned URL from your server
         const urlResponse = await fetch(`${import.meta.env.VITE_SERVER_URL}/presigned_url`, {
@@ -32,9 +34,9 @@ export const uploadToIPFS = async (file: File, address: string): Promise<string>
         const upload = await pinata.upload.public
             .file(file)
             .url(data.url)
-            .keyvalues({
-                user: address
-            });
+            // .keyvalues({
+            //     user: address
+            // });
 
         if (!upload.cid) {
             throw new Error('Upload failed - no CID returned');
@@ -49,7 +51,7 @@ export const uploadToIPFS = async (file: File, address: string): Promise<string>
     }
 };
 
-export const uploadMetadata = async (metadata: NFTMetadata): Promise<string> => {
+export const uploadMetadata = async (metadata: NFTMetadata, address: string): Promise<string> => {
     try {
         // Get presigned URL from your server
         const urlResponse = await fetch(`${import.meta.env.VITE_SERVER_URL}/presigned_url`, {
@@ -68,6 +70,13 @@ export const uploadMetadata = async (metadata: NFTMetadata): Promise<string> => 
         const upload = await pinata.upload.public
             .file(metadataFile)
             .url(data.url)
+            .keyvalues({
+                user: address,
+                name: metadata.name,
+                description: metadata.description,
+                type: "nft-metadata",
+                imageUrl: metadata.image
+            });
 
         if (!upload.cid) {
             throw new Error('Upload failed - no CID returned');
@@ -81,3 +90,30 @@ export const uploadMetadata = async (metadata: NFTMetadata): Promise<string> => 
         throw new Error('Failed to upload metadata to IPFS');
     }
 }; 
+
+// I did not take this is to consideration - so i am just fetching the NFTS from
+// IPFS via pinata. In the real world case, i'll need to retrieve this from the blockchain
+
+// https://example-gateway.mypinata.cloud/ipfs/{cid}
+export const fetchNftCollectionsFromPinata = async (address: string) => {
+    await ensureEthereumAvailable();
+
+    console.log(address)
+
+    try{
+        const files = await pinata.files
+            .public
+            .list()
+            .keyvalues({
+                //@ts-ignore
+                user: address.address,
+                type: "nft-metadata"
+            })
+        
+        return files
+
+    } catch (error) {
+        console.error('Error getting NFT collections:', error);
+        throw new Error('Failed to retrieve user NFTs');
+    }
+}

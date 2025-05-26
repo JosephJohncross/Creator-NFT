@@ -963,6 +963,11 @@ html {
   height: 100%;
 }
 
+.size-32 {
+  width: 8rem;
+  height: 8rem;
+}
+
 .h-10 {
   height: 2.5rem;
 }
@@ -1033,6 +1038,10 @@ html {
 
 .h-px {
   height: 1px;
+}
+
+.h-\[calc\(80vh-80px\)\] {
+  height: calc(80vh - 80px);
 }
 
 .max-h-96 {
@@ -1740,6 +1749,11 @@ html {
 .text-yellow-500 {
   --tw-text-opacity: 1;
   color: rgb(234 179 8 / var(--tw-text-opacity));
+}
+
+.text-gray-500 {
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 
 .underline-offset-4 {
